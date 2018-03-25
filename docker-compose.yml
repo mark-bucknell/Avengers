@@ -1,0 +1,23 @@
+version: '3.2'
+services:
+    web:
+        image: httpd
+        ports:
+            - "8081:80"
+        volumes:
+           - ./src:/var/www/html
+           - ./config/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:rw
+           - ./config/apache/sites/site.conf:/usr/local/apache2/conf/sites/sites.conf
+           - ./logs/apache2/:/usr/local/apache2/logs/:rw
+        links:
+          - php
+    php:
+        image: php:7.2-fpm
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./config/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:rw
+            - ./config/php/php.ini:/usr/local/etc/php/php.ini
+            - ./src:/var/www/html
+
+
